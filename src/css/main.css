@@ -1,0 +1,77 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    background-color: #FCFBFA;
+    color: #333;
+}
+
+input {
+    font-size: 14px;
+    outline: none;
+    border: 1px solid #ccc;
+}
+
+input:focus {
+    border: 1px solid #0074D9;
+}
+
+a {
+    text-decoration: none;
+    color: #0074D9;
+}
+
+.btn {
+    background: #0074D9;
+    color: #fff;
+    border: none;
+    padding: 03px;
+    margin-left: 5px;
+    border-radius: 2px;
+}
+
+table {
+    border: 1px solid #ccc;
+    background: #fff;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+th a {
+    display: block;
+}
+
+.pagination {
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li {
+    display: inline-block;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+}
+
+.pagination li:last-child {
+    margin-right: 0;
+}
+
+.pagination button {
+    background: #fff;
+    padding: 5px;
+    display: block;
+    border: none;
+    color: #0074D9;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    color: #ccc;
+    cursor: default;
+}
