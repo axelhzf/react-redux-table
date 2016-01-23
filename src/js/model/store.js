@@ -1,10 +1,12 @@
 import Immutable from "immutable";
-import {createStore} from "redux";
+import {createStore, compose} from "redux";
 import reducer from "./reducer";
 import _ from "lodash";
+import DevTools from "../DevTools";
 
 const initialState = Immutable.fromJS({
   issues: {
+    query: "",
     sort: {
       column: undefined,
       order: "desc"
@@ -23,7 +25,11 @@ function mockRows(numberOfRows) {
   ));
 }
 
-export default createStore(reducer, initialState);
+const finalCreateStore = compose(
+  DevTools.instrument()
+)(createStore);
+
+export default finalCreateStore(reducer, initialState);
 
 
 

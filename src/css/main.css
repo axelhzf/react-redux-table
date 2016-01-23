@@ -9,6 +9,7 @@ input {
     font-size: 14px;
     outline: none;
     border: 1px solid #ccc;
+    padding: 5px;
 }
 
 input:focus {
@@ -74,4 +75,14 @@ th a {
 .pagination button:disabled {
     color: #ccc;
     cursor: default;
+}
+
+.search-input {
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+.search-input input {
+    border-radius: 5px;
+    width: 300px;
 }

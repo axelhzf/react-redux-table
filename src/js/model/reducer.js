@@ -22,6 +22,13 @@ const reducers = {
     cursor = cursor.setIn(["pagination", "offset"], page * pagination.get("limit"));
 
     return cursor._rootData;
+  },
+
+  TABLE_FILTER: (state, {query, cursor}) => {
+    cursor = cursor.set("query", query);
+    cursor = cursor.setIn(["pagination", "offset"], 0);
+
+    return cursor._rootData;
   }
 
 };

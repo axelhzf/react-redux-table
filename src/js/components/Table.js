@@ -5,6 +5,7 @@ import _ from "lodash";
 import Pager from "react-pager";
 
 import Pagination from "./Pagination";
+import SearchInput from "./SearchInput";
 
 class Table extends React.Component {
 
@@ -60,45 +61,73 @@ class Table extends React.Component {
     dispatch({type: "TABLE_SET_PAGE", cursor, page});
   };
 
-  visibleRows() {
+  visibleRows(rows) {
     const {cursor, columns} = this.props;
 
-    const rows = cursor.get("rows");
     const sort = cursor.get("sort").toJS();
 
-    const sortColumn = _.find(columns, {id: sort.column});
     let visibleRows = rows;
+
+    // sort
+    const sortColumn = _.find(columns, {id: sort.column});
     if (sortColumn) {
       visibleRows = rows.sort(this.comparator(sortColumn.sort, sort.order));
     }
 
+    // pagination
     const offset = cursor.getIn(["pagination", "offset"]);
     const limit = cursor.getIn(["pagination", "limit"]);
-    visibleRows = visibleRows.slice(offset, offset + limit);
+
+    visibleRows = visibleRows.slice(offset, Math.min(offset + limit, visibleRows.count()));
 
     return visibleRows;
   }
 
-  paginationOptions() {
+  paginationOptions(rows) {
     const {cursor} = this.props;
-    const rows = cursor.get("rows");
     const offset = cursor.getIn(["pagination", "offset"]);
     const limit = cursor.getIn(["pagination", "limit"]);
-
     return {
       total: Math.ceil(rows.count() / limit),
-      current : Math.floor(offset / limit)
+      current: Math.floor(offset / limit)
     };
   }
 
-  render() {
-    const {columns} = this.props;
+  filterRows() {
+    const {cursor} = this.props;
+    const rows = cursor.get("rows");
+    const query = cursor.get("query");
 
-    const visibleRows = this.visibleRows();
-    const paginationOptions = this.paginationOptions();
+    // filter
+    if (query.length === 0) {
+      return rows;
+    }
+
+    const keys = _.map(this.props.columns, "sort"); //TODO rename sort to key
+
+    const ignoreCaseMatch = (a, b) => a.toLowerCase().indexOf(b.toLowerCase()) >= 0;
+    const rowMatch = (row) =>  _.some(keys, key => ignoreCaseMatch(row.get(key), query));
+
+    return rows.filter(rowMatch);
+  }
+
+  onChangeQuery = (query) => {
+    const {dispatch, cursor} = this.props;
+    dispatch({type: "TABLE_FILTER", cursor, query});
+  };
+
+  render() {
+    const {cursor, columns} = this.props;
+
+    const filteredRows = this.filterRows();
+    const visibleRows = this.visibleRows(filteredRows);
+    const paginationOptions = this.paginationOptions(filteredRows);
+
+    const query = cursor.get("query");
 
     return (
       <div>
+        <SearchInput value={query} onChange={this.onChangeQuery}/>
         <table>
           <thead>
           <tr>
@@ -111,8 +140,9 @@ class Table extends React.Component {
         </table>
         <Pagination {...paginationOptions} onPageChange={this.onPageChange}/>
       </div>
-    )
+    );
   }
+
 }
 
 export default connect()(Table);
