@@ -21,13 +21,15 @@ class Issues extends React.Component {
         id: 1,
         name: "title",
         cell: this.renderHighlightCellForKey("title"),
-        sort: "title"
+        sort: "title",
+        style: {width: 150}
       },
       {
         id: 2,
         name: "author",
         cell: this.renderHighlightCellForKey("author"),
-        sort: "author"
+        sort: "author",
+        style: {width: 150}
       },
       {
         id: 3,

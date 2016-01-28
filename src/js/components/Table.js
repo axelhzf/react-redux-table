@@ -39,7 +39,7 @@ class Table extends React.Component {
     }
 
     return (
-      <th key={index}><a href="" onClick={(e) => this.onClickHeader(e, column.id)}>{column.name} {sortSymbol}</a></th>
+      <th key={index} style={column.style}><a href="" onClick={(e) => this.onClickHeader(e, column.id)}>{column.name} {sortSymbol}</a></th>
     );
   };
 
