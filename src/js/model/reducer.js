@@ -34,6 +34,17 @@ const reducers = {
     cursor = cursor.setIn(["pagination", "offset"], 0);
 
     return cursor._rootData;
+  },
+
+  TABLE_TOGGLE_HIGHLIGHT: (state, {statePath, rowId}) => {
+    const path = [statePath, "highlightIds", rowId];
+    const currentlyHighlighted = state.getIn(path);
+    if (currentlyHighlighted) {
+      state = state.deleteIn(path);
+    } else {
+      state = state.setIn(path, true)
+    }
+    return state;
   }
 
 };

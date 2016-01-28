@@ -90,3 +90,8 @@ th a {
 .highlight {
     background-color: #fff7c7;
 }
+
+.row-highlighted {
+    background-color: #0074D9;
+    color: #fff;
+}

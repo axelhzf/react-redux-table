@@ -3,6 +3,7 @@ import ReactDom from "react-dom";
 import {connect} from "react-redux";
 import _ from "lodash";
 import Pager from "react-pager";
+import classnames from "classnames";
 
 import Pagination from "./Pagination";
 import SearchInput from "./SearchInput";
@@ -43,9 +44,20 @@ class Table extends React.Component {
   };
 
   renderRow = (row, rowIndex) => {
-    const {columns} = this.props;
+    const {cursor, columns} = this.props;
     const renderCell = (child, childIndex) => <td key={childIndex}>{child.cell(row, rowIndex)}</td>;
-    return <tr key={rowIndex}>{columns.map(renderCell)}</tr>;
+    const isHighlighted = cursor.getIn(["highlightIds", row.get("id")]);
+    const className = classnames({"row-highlighted": isHighlighted});
+    return <tr className={className} onClick={(e) =>this.onSelectRow(e, row)} key={rowIndex}>{columns.map(renderCell)}</tr>;
+  };
+
+  onSelectRow = (e, row) => {
+    e.stopPropagation();
+
+    const {dispatch, statePath} = this.props;
+    const rowId = row.get("id");
+
+    dispatch({type: "TABLE_TOGGLE_HIGHLIGHT", statePath, rowId});
   };
 
   comparator(key, order) {

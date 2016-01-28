@@ -11,6 +11,7 @@ const initialState = Immutable.fromJS({
       column: undefined,
       order: "desc"
     },
+    highlightIds: {},
     pagination: {
       limit: 5,
       offset: 0
@@ -21,7 +22,7 @@ const initialState = Immutable.fromJS({
 
 function mockRows(numberOfRows) {
   return _.map(_.range(0, numberOfRows), i => (
-  {title: `title ${i}`, author: `author ${i}`, body: `body ${i}`}
+    {id: i, title: `title ${i}`, author: `author ${i}`, body: `body ${i}`}
   ));
 }
 

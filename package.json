@@ -1,6 +1,7 @@
 {
   "name": "react-github-table",
   "dependencies": {
+    "classnames": "^2.2.3",
     "github-api": "^0.10.7",
     "immutable": "^3.7.6",
     "lodash": "^4.0.0",
