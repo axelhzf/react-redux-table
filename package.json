@@ -7,6 +7,7 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-pager": "^1.1.2",
+    "react-pure-render": "^1.0.2",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5"
   },

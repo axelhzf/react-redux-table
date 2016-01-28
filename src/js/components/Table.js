@@ -7,19 +7,25 @@ import Pager from "react-pager";
 import Pagination from "./Pagination";
 import SearchInput from "./SearchInput";
 
+import Cursor from "immutable/contrib/cursor";
+
 class Table extends React.Component {
 
   static propTypes = {
     columns: PropTypes.array.isRequired,
-    cursor: PropTypes.any.isRequired // Cursor PropType?
+    statePath: PropTypes.string.isRequired,
+
+    //connect
+    cursor: PropTypes.any.isRequired,
+    dispatch: PropTypes.func.isRequired
   };
 
   onClickHeader = (e, columnId) => {
     e.preventDefault();
 
-    const {dispatch, cursor} = this.props;
+    const {dispatch, statePath} = this.props;
 
-    dispatch({type: "TABLE_SORT", cursor: cursor, columnId});
+    dispatch({type: "TABLE_SORT", statePath, columnId});
   };
 
   renderHeader = (column, index) => {
@@ -57,8 +63,8 @@ class Table extends React.Component {
   }
 
   onPageChange = (page) => {
-    const {cursor, dispatch} = this.props;
-    dispatch({type: "TABLE_SET_PAGE", cursor, page});
+    const {statePath, dispatch} = this.props;
+    dispatch({type: "TABLE_SET_PAGE", statePath, page});
   };
 
   visibleRows(rows) {
@@ -112,8 +118,8 @@ class Table extends React.Component {
   }
 
   onChangeQuery = (query) => {
-    const {dispatch, cursor} = this.props;
-    dispatch({type: "TABLE_FILTER", cursor, query});
+    const {dispatch, statePath} = this.props;
+    dispatch({type: "TABLE_FILTER", statePath, query});
   };
 
   render() {
@@ -145,4 +151,10 @@ class Table extends React.Component {
 
 }
 
-export default connect()(Table);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    cursor: Cursor.from(state, ownProps.statePath)
+  }
+};
+
+export default connect(mapStateToProps)(Table);

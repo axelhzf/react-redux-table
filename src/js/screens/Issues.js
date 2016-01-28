@@ -3,43 +3,49 @@ import ReactDom from "react-dom";
 import {connect} from "react-redux";
 import Table from "../components/Table";
 import Cursor from "immutable/contrib/cursor";
+import Highlight from "../components/Highlight";
 
 class Issues extends React.Component {
 
-  render() {
-    const {issues} = this.props;
+  renderHighlightCellForKey(key) {
+    return (issue) => {
+      const {issues} = this.props;
+      const filter = issues.get("query");
+      return <Highlight text={issue.get(key)} filter={filter}/>
+    }
+  }
 
+  render() {
     const columns = [
       {
         id: 1,
         name: "title",
-        cell: (issue) => issue.get("title"),
+        cell: this.renderHighlightCellForKey("title"),
         sort: "title"
       },
       {
         id: 2,
         name: "author",
-        cell: (issue) => issue.get("author"),
+        cell: this.renderHighlightCellForKey("author"),
         sort: "author"
       },
       {
         id: 3,
         name: "body",
-        cell: (issue) => issue.get("body"),
+        cell: this.renderHighlightCellForKey("body"),
         sort: "body"
       }
     ];
 
-    return (
-      <Table cursor={issues} columns={columns} />
-    )
+    return <Table statePath="issues" columns={columns} />;
   }
 
 }
 
+
 const mapStateToProps = (state) => {
   return {
-    issues: Cursor.from(state, "issues")
+    issues: state.get("issues")
   }
 };
 

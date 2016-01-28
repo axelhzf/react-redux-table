@@ -86,3 +86,7 @@ th a {
     border-radius: 5px;
     width: 300px;
 }
+
+.highlight {
+    background-color: #fff7c7;
+}

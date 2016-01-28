@@ -1,14 +1,17 @@
-import Immutable from "immutable";
+import {Map} from "immutable";
+import Cursor from "immutable/contrib/cursor";
 
 const reducers = {
 
   TABLE_SORT: (state, action) =>{
-    let {cursor, columnId} = action;
+    let {statePath, columnId} = action;
+
+    var cursor = Cursor.from(state, statePath);
     const currentColumn = cursor.getIn(["sort", "column"]);
     const currentOrder = cursor.getIn(["sort", "order"]);
 
     if (columnId !== currentColumn) {
-      cursor = cursor.set("sort", Immutable.Map({column: columnId, order: "desc"}))
+      cursor = cursor.set("sort", Map({column: columnId, order: "desc"}))
     } else {
       cursor = cursor.setIn(["sort", "order"], currentOrder === "asc" ? "desc": "asc");
     }
@@ -17,14 +20,16 @@ const reducers = {
     return cursor._rootData; //TODO remove or isolate internals?
   },
 
-  TABLE_SET_PAGE: (state, {cursor, page}) =>{
+  TABLE_SET_PAGE: (state, {statePath, page}) =>{
+    var cursor = Cursor.from(state, statePath);
     const pagination = cursor.get("pagination");
     cursor = cursor.setIn(["pagination", "offset"], page * pagination.get("limit"));
 
     return cursor._rootData;
   },
 
-  TABLE_FILTER: (state, {query, cursor}) => {
+  TABLE_FILTER: (state, {query, statePath}) => {
+    var cursor = Cursor.from(state, statePath);
     cursor = cursor.set("query", query);
     cursor = cursor.setIn(["pagination", "offset"], 0);
 
