@@ -20,7 +20,7 @@ export default class SearchInput extends React.Component {
   };
 
   render() {
-    const {value} = this.props.value;
+    var {value} = this.props;
     return (
       <form onSubmit={this.onSubmit} className="search-input">
         <input type="search" value={value} onChange={this.onChange} ref="input" placeholder="Filter..."/>

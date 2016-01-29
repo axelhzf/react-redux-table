@@ -12,7 +12,7 @@ describe("Highlight", () => {
     };
 
     const component = renderComponent(props);
-    expect(findHighlightText(component)).to.equal(undefined);
+    expect(findHighlightText(component)).toEqual(undefined);
   });
 
   it("should highlight part that match with filter", () => {
@@ -22,7 +22,7 @@ describe("Highlight", () => {
     };
 
     const component = renderComponent(props);
-    expect(findHighlightText(component)).to.equal("will");
+    expect(findHighlightText(component)).toEqual("will");
   });
 
   it("should highlight ignoring case", () => {
@@ -32,7 +32,7 @@ describe("Highlight", () => {
     };
 
     const component = renderComponent(props);
-    expect(findHighlightText(component)).to.equal("will");
+    expect(findHighlightText(component)).toEqual("will");
   });
 
   function renderComponent(props) {
