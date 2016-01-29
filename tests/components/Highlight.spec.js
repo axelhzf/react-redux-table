@@ -1,5 +1,6 @@
-import React from 'react'
-import TestUtils from 'react-addons-test-utils'
+import React from "react";
+import {shallow} from "enzyme";
+
 import Highlight from '../../src/js/components/Highlight'
 
 describe("Highlight", () => {
@@ -21,7 +22,6 @@ describe("Highlight", () => {
     };
 
     const component = renderComponent(props);
-    const highlight = TestUtils.findRenderedDOMComponentWithClass(component, "highlight");
     expect(findHighlightText(component)).to.equal("will");
   });
 
@@ -36,16 +36,17 @@ describe("Highlight", () => {
   });
 
   function renderComponent(props) {
-    return TestUtils.renderIntoDocument(<Highlight {...props} ></Highlight>)
+    return shallow(<Highlight {...props} ></Highlight>);
   }
 
   function findHighlightText(component) {
-    const highlights = TestUtils.scryRenderedDOMComponentsWithClass(component, "highlight");
+    const highlights = component.find(".highlight");
+
     if (highlights.length === 0) {
       return;
     }
     if (highlights.length === 1) {
-      return highlights[0].textContent;
+      return highlights.text();
     }
     throw new Error("Too much highlight nodes");
   }
